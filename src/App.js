@@ -1,18 +1,25 @@
+import React, { useState } from 'react';
 import './App.scss';
 import hangmanImage from './hangman-150.png';
+import randomWords from 'random-words';
 
 const App = () => {
+  const [word, setWord] = useState(randomWords());
+
+  const handleClick = () => {
+    setWord(randomWords());
+  };
+
+  const letterArray = word.split('');
   return (
     <div className='container'>
       <h1>Hangman</h1>
 
       <section className='content'>
         <div className='game'>
-          <span className='letter'></span>
-          <span className='letter'></span>
-          <span className='letter'></span>
-          <span className='letter'></span>
-          <span className='letter'></span>
+          {letterArray.map((letter) => (
+            <span className='letter'>{letter}</span>
+          ))}
 
           <p>Press a key to make your choice.</p>
 
@@ -20,7 +27,9 @@ const App = () => {
             <img src={hangmanImage} alt='hangman' />
           </div>
 
-          <button className='btn'>Get me a new word</button>
+          <button onClick={handleClick} className='btn'>
+            Get me a new word
+          </button>
         </div>
 
         <div className='letters'>
