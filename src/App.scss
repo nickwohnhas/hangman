@@ -1,0 +1,45 @@
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+.container {
+  max-width: 1000px;
+  margin: auto;
+  text-align: center;
+}
+
+.content {
+  display: flex;
+  justify-content: center;
+}
+
+.letter {
+  background: lightslategray;
+  width: 45px;
+  height: 45px;
+  display: inline-block;
+  margin: 0 0.5em;
+}
+
+.letters {
+  margin-left: 3em;
+  border: 1px solid red;
+  padding: 1em;
+  border-radius: 3%;
+}
+
+.letter-box {
+  margin-bottom: 0.5em;
+  font-size: 2em;
+}
+
+.btn {
+  padding: 1em;
+  margin-top: 0.75em;
+  border-radius: 5%;
+  color: white;
+  background: lightslategray;
+  &:hover {
+    cursor: pointer;
+  }
+}
