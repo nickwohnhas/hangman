@@ -1,7 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import './App.scss'
 import Letter from './components/Letter'
-import hangmanImage from './hangman-150.png'
+import ImageZero from './stage.png'
+import ImageOne from './stage 1.png'
+import ImageTwo from './stage 2.png'
+import ImageThree from './stage 3.png'
+import ImageFour from './stage 4.png'
+import ImageFive from './stage 5.png'
+import ImageSix from './stage 6.png'
 import randomWords from 'random-words'
 
 const App = () => {
@@ -11,34 +17,52 @@ const App = () => {
   const [letterStatus, setLetterStatus] = useState(
     letters.map((letter) => false)
   )
+  const [gameOver, setGameOver] = useState(false)
+
+  const [image, setImage] = useState(ImageZero)
 
   const handleClick = () => {
     const newWord = randomWords()
     setWord(newWord)
     setLetters(newWord.split(''))
     setErrorLetters([])
+    setLetterStatus(newWord.split('').map((letter) => false))
+    setGameOver(false)
   }
 
   const handleUserKeyPress = useCallback(
     (event) => {
-      const { key, keyCode } = event
-      const currentLetters = word.split('')
+      const { key } = event
+      const images = [
+        ImageZero,
+        ImageOne,
+        ImageTwo,
+        ImageThree,
+        ImageFour,
+        ImageFive,
+        ImageSix,
+      ]
+      if (gameOver) {
+        return
+      } else if (letters.find((letter) => letter === key)) {
+        let newLetterStatus = [...letterStatus]
 
-      if (currentLetters.find((_key) => _key === key)) {
-        const newLetterStatus = [...letterStatus]
-        currentLetters.forEach((_letter, i) => {
+        letters.forEach((_letter, i) => {
           if (_letter === key) {
             newLetterStatus[i] = true
           }
         })
         setLetterStatus(newLetterStatus)
       } else if (errorLetters.length === 5) {
-        // game over
+        setGameOver(true)
+        setImage(images[errorLetters.length + 1])
+        setErrorLetters([...errorLetters, key])
       } else {
+        setImage(images[errorLetters.length + 1])
         setErrorLetters([...errorLetters, key])
       }
     },
-    [errorLetters, word, letterStatus]
+    [errorLetters, gameOver, letters, letterStatus]
   )
 
   useEffect(() => {
@@ -62,7 +86,7 @@ const App = () => {
           <p>Press a key to make your choice.</p>
 
           <div>
-            <img src={hangmanImage} alt="hangman" />
+            <img src={image} alt="hangman" />
           </div>
 
           <button onClick={handleClick} className="btn">
@@ -72,8 +96,12 @@ const App = () => {
 
         <div className="letters">
           <h2>Incorrect Guesses</h2>
-          {errorLetters.map((e) => {
-            return <div className="letter-box">{e}</div>
+          {errorLetters.map((e, i) => {
+            return (
+              <div key={i} className="letter-box">
+                {e}
+              </div>
+            )
           })}
         </div>
       </section>
