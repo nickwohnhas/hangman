@@ -1,49 +1,84 @@
-import React, { useState } from 'react';
-import './App.scss';
-import hangmanImage from './hangman-150.png';
-import randomWords from 'random-words';
+import React, { useState, useEffect, useCallback } from 'react'
+import './App.scss'
+import Letter from './components/Letter'
+import hangmanImage from './hangman-150.png'
+import randomWords from 'random-words'
 
 const App = () => {
-  const [word, setWord] = useState(randomWords());
+  const [word, setWord] = useState(randomWords())
+  const [errorLetters, setErrorLetters] = useState([])
+  const [letters, setLetters] = useState(word.split(''))
+  const [letterStatus, setLetterStatus] = useState(
+    letters.map((letter) => false)
+  )
 
   const handleClick = () => {
-    setWord(randomWords());
-  };
+    const newWord = randomWords()
+    setWord(newWord)
+    setLetters(newWord.split(''))
+    setErrorLetters([])
+  }
 
-  const letterArray = word.split('');
+  const handleUserKeyPress = useCallback(
+    (event) => {
+      const { key, keyCode } = event
+      const currentLetters = word.split('')
+
+      if (currentLetters.find((_key) => _key === key)) {
+        const newLetterStatus = [...letterStatus]
+        currentLetters.forEach((_letter, i) => {
+          if (_letter === key) {
+            newLetterStatus[i] = true
+          }
+        })
+        setLetterStatus(newLetterStatus)
+      } else if (errorLetters.length === 5) {
+        // game over
+      } else {
+        setErrorLetters([...errorLetters, key])
+      }
+    },
+    [errorLetters, word, letterStatus]
+  )
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleUserKeyPress)
+
+    return () => {
+      window.removeEventListener('keydown', handleUserKeyPress)
+    }
+  }, [handleUserKeyPress])
+
   return (
-    <div className='container'>
+    <div className="container">
       <h1>Hangman</h1>
 
-      <section className='content'>
-        <div className='game'>
-          {letterArray.map((letter) => (
-            <span className='letter'>{letter}</span>
+      <section className="content">
+        <div className="game">
+          {letters.map((letter, i) => (
+            <Letter letter={letter} key={i} showLetter={letterStatus[i]} />
           ))}
 
           <p>Press a key to make your choice.</p>
 
           <div>
-            <img src={hangmanImage} alt='hangman' />
+            <img src={hangmanImage} alt="hangman" />
           </div>
 
-          <button onClick={handleClick} className='btn'>
+          <button onClick={handleClick} className="btn">
             Get me a new word
           </button>
         </div>
 
-        <div className='letters'>
+        <div className="letters">
           <h2>Incorrect Guesses</h2>
-          <div className='letter-box'>e</div>
-          <div className='letter-box'>a</div>
-          <div className='letter-box'>c</div>
-          <div className='letter-box'>d</div>
-          <div className='letter-box'>d</div>
-          <div className='letter-box'>d</div>
+          {errorLetters.map((e) => {
+            return <div className="letter-box">{e}</div>
+          })}
         </div>
       </section>
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App
