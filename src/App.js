@@ -71,6 +71,7 @@ const App = () => {
       } else if (errorLetters.length === 5) {
         // you've used up all of your guesses
         setGameOver(true)
+        setShowAlert(true)
         setAlertText('Game Over')
         setImage(images[errorLetters.length + 1])
         setErrorLetters([...errorLetters, key])
