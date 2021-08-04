@@ -17,6 +17,8 @@ const App = () => {
   const [letterStatus, setLetterStatus] = useState(
     letters.map((letter) => false)
   )
+  const [alertText, setAlertText] = useState('')
+  const [showAlert, setShowAlert] = useState(false)
   const [gameOver, setGameOver] = useState(false)
 
   const [image, setImage] = useState(ImageZero)
@@ -27,6 +29,7 @@ const App = () => {
     setLetters(newWord.split(''))
     setErrorLetters([])
     setLetterStatus(newWord.split('').map((letter) => false))
+    setImage(ImageZero)
     setGameOver(false)
   }
 
@@ -44,9 +47,11 @@ const App = () => {
       ]
       if (gameOver) {
         return
+      } else if (errorLetters.find((eLetter) => eLetter === key)) {
+        setAlertText('You have already chosen that letter')
+        setShowAlert(true)
       } else if (letters.find((letter) => letter === key)) {
         let newLetterStatus = [...letterStatus]
-
         letters.forEach((_letter, i) => {
           if (_letter === key) {
             newLetterStatus[i] = true
@@ -55,6 +60,7 @@ const App = () => {
         setLetterStatus(newLetterStatus)
       } else if (errorLetters.length === 5) {
         setGameOver(true)
+        setAlertText('Game Over')
         setImage(images[errorLetters.length + 1])
         setErrorLetters([...errorLetters, key])
       } else {
@@ -76,12 +82,14 @@ const App = () => {
   return (
     <div className="container">
       <h1>Hangman</h1>
-
+      <div className="alert-box">{showAlert && alertText}</div>
       <section className="content">
         <div className="game">
-          {letters.map((letter, i) => (
-            <Letter letter={letter} key={i} showLetter={letterStatus[i]} />
-          ))}
+          <div className="letter-container">
+            {letters.map((letter, i) => (
+              <Letter letter={letter} key={i} showLetter={letterStatus[i]} />
+            ))}
+          </div>
 
           <p>Press a key to make your choice.</p>
 

@@ -15,8 +15,7 @@ body {
 
 .letter {
   background: lightslategray;
-  width: 45px;
-  height: 45px;
+  padding: 0.75em;
   display: inline-block;
   margin: 0 0.5em;
 }
@@ -43,4 +42,15 @@ body {
   &:hover {
     cursor: pointer;
   }
+}
+
+.letter-container {
+  display: flex;
+}
+
+.alert-box {
+  padding: 1em;
+  background: #ffd111;
+  margin-bottom: 1em;
+  border-radius: 10px;
 }

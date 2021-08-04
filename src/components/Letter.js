@@ -2,7 +2,9 @@ import React from 'react'
 import '../App.scss'
 
 const Letter = ({ letter, showLetter }) => {
-  return <span className="letter">{showLetter && letter}</span>
+  return (
+    <div className="letter">{showLetter ? letter : <span>&nbsp;</span>}</div>
+  )
 }
 
 export default Letter
