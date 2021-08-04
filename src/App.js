@@ -30,6 +30,7 @@ const App = () => {
     setErrorLetters([])
     setLetterStatus(newWord.split('').map((letter) => false))
     setImage(ImageZero)
+    setShowAlert(false)
     setGameOver(false)
   }
 
@@ -45,12 +46,15 @@ const App = () => {
         ImageFive,
         ImageSix,
       ]
-      if (gameOver) {
+      if (gameOver || notValidLetter(event)) {
+        // game is already over, or code is not a-z
         return
       } else if (errorLetters.find((eLetter) => eLetter === key)) {
         setAlertText('You have already chosen that letter')
         setShowAlert(true)
       } else if (letters.find((letter) => letter === key)) {
+        // there was a match!
+        setShowAlert(false)
         let newLetterStatus = [...letterStatus]
         letters.forEach((_letter, i) => {
           if (_letter === key) {
@@ -58,18 +62,31 @@ const App = () => {
           }
         })
         setLetterStatus(newLetterStatus)
+        // did you win?
+        if (newLetterStatus.filter((letter) => letter === false).length === 0) {
+          setAlertText('You have won!')
+          setShowAlert(true)
+          setGameOver(true)
+        }
       } else if (errorLetters.length === 5) {
+        // you've used up all of your guesses
         setGameOver(true)
         setAlertText('Game Over')
         setImage(images[errorLetters.length + 1])
         setErrorLetters([...errorLetters, key])
       } else {
+        // no match found, add to errors
+        setShowAlert(false)
         setImage(images[errorLetters.length + 1])
         setErrorLetters([...errorLetters, key])
       }
     },
     [errorLetters, gameOver, letters, letterStatus]
   )
+
+  const notValidLetter = (event) => {
+    return event.keyCode < 65 || event.keyCode > 90
+  }
 
   useEffect(() => {
     window.addEventListener('keydown', handleUserKeyPress)
@@ -82,7 +99,9 @@ const App = () => {
   return (
     <div className="container">
       <h1>Hangman</h1>
-      <div className="alert-box">{showAlert && alertText}</div>
+
+      {showAlert && <div className="alert-box">{alertText}</div>}
+
       <section className="content">
         <div className="game">
           <div className="letter-container">
