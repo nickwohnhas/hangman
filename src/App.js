@@ -74,6 +74,7 @@ const App = () => {
         setShowAlert(true)
         setAlertText('Game Over')
         setImage(images[errorLetters.length + 1])
+        setLetterStatus(letters.map((letter) => true))
         setErrorLetters([...errorLetters, key])
       } else {
         // no match found, add to errors
