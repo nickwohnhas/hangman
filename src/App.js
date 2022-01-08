@@ -20,6 +20,7 @@ const App = () => {
   const [alertText, setAlertText] = useState('')
   const [showAlert, setShowAlert] = useState(false)
   const [gameOver, setGameOver] = useState(false)
+  const [alertColor, setAlertColor] = useState('')
 
   const [image, setImage] = useState(ImageZero)
 
@@ -51,6 +52,7 @@ const App = () => {
         return
       } else if (errorLetters.find((eLetter) => eLetter === key)) {
         setAlertText('You have already chosen that letter')
+        setAlertColor('warning')
         setShowAlert(true)
       } else if (letters.find((letter) => letter === key)) {
         // there was a match!
@@ -67,12 +69,14 @@ const App = () => {
           setAlertText('You have won!')
           setShowAlert(true)
           setGameOver(true)
+          setAlertColor('success')
         }
       } else if (errorLetters.length === 5) {
         // you've used up all of your guesses
         setGameOver(true)
         setShowAlert(true)
         setAlertText('Game Over')
+        setAlertColor('game-over')
         setImage(images[errorLetters.length + 1])
         setLetterStatus(letters.map((letter) => true))
         setErrorLetters([...errorLetters, key])
@@ -102,7 +106,9 @@ const App = () => {
     <div className="container">
       <h1>Hangman</h1>
 
-      {showAlert && <div className="alert-box">{alertText}</div>}
+      {showAlert && (
+        <div className={`alert-box ${alertColor}`}>{alertText}</div>
+      )}
 
       <section className="content">
         <div className="game">

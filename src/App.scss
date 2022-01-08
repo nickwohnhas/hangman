@@ -50,7 +50,18 @@ body {
 
 .alert-box {
   padding: 1em;
-  background: #ffd111;
   margin-bottom: 1em;
   border-radius: 10px;
+}
+
+.success {
+  background: #3fe40c;
+}
+
+.game-over {
+  background: #ff3511;
+}
+
+.warning {
+  background: #ffd111;
 }
