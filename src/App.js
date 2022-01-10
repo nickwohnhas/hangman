@@ -11,9 +11,8 @@ import ImageSix from './stage 6.png'
 import randomWords from 'random-words'
 
 const App = () => {
-  const [word, setWord] = useState(randomWords())
   const [errorLetters, setErrorLetters] = useState([])
-  const [letters, setLetters] = useState(word.split(''))
+  const [letters, setLetters] = useState(randomWords().split(''))
   const [letterStatus, setLetterStatus] = useState(
     letters.map((letter) => false)
   )
@@ -26,7 +25,6 @@ const App = () => {
 
   const handleClick = () => {
     const newWord = randomWords()
-    setWord(newWord)
     setLetters(newWord.split(''))
     setErrorLetters([])
     setLetterStatus(newWord.split('').map((letter) => false))
