@@ -3,7 +3,14 @@ import '../App.scss'
 
 const Letter = ({ letter, showLetter }) => {
   return (
-    <div className="letter">{showLetter ? letter : <span>&nbsp;</span>}</div>
+    <div className="flip-card">
+      <div className={`flip-card-inner ${showLetter && 'rotate-inner'}`}>
+        <div className="flip-card-front">
+          <div style={{ width: '16px;', height: '16px;' }}></div>
+        </div>
+        <div className="flip-card-back">{showLetter && letter}</div>
+      </div>
+    </div>
   )
 }
 
