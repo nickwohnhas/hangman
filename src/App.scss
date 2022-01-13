@@ -46,6 +46,7 @@ body {
 
 .letter-container {
   display: flex;
+  justify-content: space-between;
 }
 
 .alert-box {
@@ -66,7 +67,6 @@ body {
   background: #ffd111;
 }
 
-// #2d6fb0 dark blue
 /* The flip card container - set the width and height to whatever you want. We have added the border property to demonstrate that the flip itself goes out of the box on hover (remove perspective if you don't want the 3D effect */
 .flip-card {
   background-color: transparent;
@@ -87,7 +87,7 @@ body {
 }
 
 /* Do an horizontal flip when you move the mouse over the flip box container */
-.flip-card:hover .flip-card-inner {
+.rotate-inner {
   transform: rotateY(180deg);
 }
 
@@ -99,6 +99,9 @@ body {
   height: 100%;
   -webkit-backface-visibility: hidden; /* Safari */
   backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 /* Style the front side (fallback if image is missing) */
