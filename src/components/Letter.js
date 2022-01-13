@@ -8,7 +8,7 @@ const Letter = ({ letter, showLetter }) => {
         <div className="flip-card-front">
           <div style={{ width: '16px;', height: '16px;' }}></div>
         </div>
-        <div className="flip-card-back">{letter}</div>
+        <div className="flip-card-back">{showLetter && letter}</div>
       </div>
     </div>
   )
