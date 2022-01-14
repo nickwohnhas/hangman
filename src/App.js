@@ -31,6 +31,7 @@ const App = () => {
     setImage(ImageZero)
     setShowAlert(false)
     setGameOver(false)
+    setAlertColor('')
   }
 
   const handleUserKeyPress = useCallback(
